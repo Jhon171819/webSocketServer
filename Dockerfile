@@ -2,7 +2,7 @@ FROM node:18.18-alpine
 
 WORKDIR /app
 
-# Copy package files
+# Copy package files and prisma schema
 COPY package*.json ./
 COPY prisma ./prisma/
 
@@ -18,5 +18,9 @@ COPY . .
 # Expose the port your app runs on
 EXPOSE 3000
 
+# Set environment variables
+ENV NODE_ENV=production
+ENV PORT=3000
+
 # Start the application
-CMD ["npm", "start"]
+CMD ["node", "Server/server.js"]

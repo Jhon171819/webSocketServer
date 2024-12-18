@@ -9,7 +9,14 @@ services:
     ports:
       - "3000:3000"
     environment:
+      - NODE_ENV=production
+      - PORT=3000
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/neondb?schema=public
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     depends_on:
       - db
     networks:
@@ -26,6 +33,11 @@ services:
       - POSTGRES_DB=neondb
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     networks:
       - app-network
 
